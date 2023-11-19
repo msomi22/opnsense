@@ -42,7 +42,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVoucher'
+              $ref: '#/components/schemas/CreateVoucherRequest'
         required: true
       responses:
         '200':
@@ -273,9 +273,7 @@ paths:
         - basic_auth:
             - write:all
             - read:all            
-          
-#------------------------------------------------------------------          
-          
+                  
 components:
   schemas:
     Voucher:
@@ -308,7 +306,7 @@ components:
   
   
   
-    CreateVoucher:
+    CreateVoucherRequest:
       type: object
       properties:
         count:
@@ -364,9 +362,3 @@ components:
     basic_auth:
       type: http
       scheme: basic
-      
-      
-      
-      
-#------------------------------------------------------
-
