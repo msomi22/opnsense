@@ -1,0 +1,372 @@
+openapi: 3.0.3
+info:
+  title: Xenovation OpnSense API - OpenAPI 3.0
+  description: |-
+    This is [Xenovation](https://xenovation.com/) API documenation based on OpenAPI 3.0 specification.
+  
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://xenovation.com/opnsense/api/v1
+  - url: https://192.168.100.110/api/captiveportal
+  
+tags:
+  - name: voucher
+    description: Everything about vouchers
+
+paths:
+  /voucher/generateVouchers/{provider}:
+    post:
+      tags:
+        - voucher
+      summary: Add a new voucher to the system
+      description: Add a new voucher to the system
+      operationId: generateVouchers
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Create a new voucher
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVoucher'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Voucher'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:vouchers
+            - read:vouchers
+        
+          
+  /voucher/dropExpiredVouchers/{provider}/{group}:
+    post:
+      tags:
+        - voucher
+      summary: Drop an expired vouchers
+      description: Drop an expired vouchers
+      operationId: dropExpiredVouchers
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: path
+          description: group id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Drop expired vouchers
+        content:
+          application/json:
+            schema:
+               type: object
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropVoucherResponse'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:all
+            - read:all        
+        
+        
+        
+  /voucher/dropVoucherGroup/{provider}/{group}:
+    post:
+      tags:
+        - voucher
+      summary: Drop voucher group
+      description: Drop voucher group
+      operationId: dropVoucherGroup
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: path
+          description: group id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Drop voucher group
+        content:
+          application/json:
+            schema:
+               type: object
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropResponse'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:all
+            - read:all         
+
+
+  /voucher/expireVoucher/{provider}:
+    post:
+      tags:
+        - voucher
+      summary: Expire voucher
+      description: Expire voucher
+      operationId: expireVoucher
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Expire voucher
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpireVoucherRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropResponse'
+        '405':
+          description: Invalid input
+      security:
+        - basic_auth:
+            - write:all
+            - read:all    
+            
+  /voucher/listVouchers/{provider}/{group}:
+    get:
+      tags:
+        - voucher
+      summary: Get list of vouchers
+      description: Get list of vouchers
+      operationId: listVouchers
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: path
+          description: group id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Voucher'         
+        '400':
+          description: Invalid provider orgroup
+        '404':
+          description: Voucher not found            
+      security:
+        - basic_auth:
+            - write:all
+            - read:all             
+            
+
+  /voucher/listVoucherGroups/{provider}:
+    get:
+      tags:
+        - voucher
+      summary: Get list of voucher groups
+      description: Get list of voucher groups
+      operationId: listVoucherGroups
+      parameters:
+        - name: provider
+          in: path
+          description: provider id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string       
+        '400':
+          description: Invalid provider
+        '404':
+          description: VoucherGroup not found            
+      security:
+        - basic_auth:
+            - write:all
+            - read:all             
+ 
+  /voucher/listProviders:
+    get:
+      tags:
+        - voucher
+      summary: Get list of providers
+      description: Get list of providers
+      operationId: listProviders
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string       
+        '400':
+          description: Invalid provider
+        '404':
+          description: Provider not found            
+      security:
+        - basic_auth:
+            - write:all
+            - read:all            
+          
+#------------------------------------------------------------------          
+          
+components:
+  schemas:
+    Voucher:
+      type: object
+      properties:
+        username:
+          type: string
+          example: LpuT
+        validity:
+          type: integer
+          format: int64
+          example: 0
+        expirytime:
+          type: number
+          example: 1700309533
+        starttime:
+          type: number
+          example: 1700308127
+        endtime:
+          type: number
+          example: 1700308120
+        state:
+          type: string
+          example: expired
+          enum:
+           - expired
+           - unused
+      xml:
+        name: voucher
+  
+  
+  
+    CreateVoucher:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 2
+        validity:
+          type: integer
+          example: 240
+        expirytime:
+          type: integer
+          example: 1440
+        vouchergroup:
+          type: string
+          example: testgroup1
+      xml:
+        name: voucher
+        
+    DropVoucherResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 2
+        status:
+          type: string
+          example: drop
+      xml:
+        name: dropvoucher
+        
+    DropResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: drop
+          enum:
+            - ok
+            - drop
+      xml:
+        name: dropgroup
+        
+    ExpireVoucherRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: LHhq
+      xml:
+        name: expirevoucher        
+        
+              
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+      
+      
+      
+      
+#------------------------------------------------------
+
