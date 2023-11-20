@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Xenovation OpnSense API - OpenAPI 3.0
+  title: OpnSense API - OpenAPI 3.0
   description: |-
-    This is [Xenovation](https://xenovation.com/) API documenation based on OpenAPI 3.0 specification.
+    This is Opnsense API documenation based on OpenAPI 3.0 specification.
   
   termsOfService: http://swagger.io/terms/
   contact:
@@ -15,7 +15,6 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://xenovation.com/opnsense/api/v1
   - url: https://192.168.100.110/api/captiveportal
   
 tags:
